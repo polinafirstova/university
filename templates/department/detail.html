@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ teacher.name }}
+{% endblock %}
+
+{% block content %}
+<div class="col d-flex justify-content-center">
+    <div class="card" style="width: 50rem;">
+        <div class="row no-gutters">
+            <div class="col-auto">
+                {% if teacher.image %}
+                <a href="{{ teacher.image.url }}" target="_blank">
+                    <img class="border-3 rounded" height="300" src="{{ teacher.image.url }}" alt="{{ teacher.name }}">
+                </a>
+                {% else %}
+                <img class="border-3 rounded" height="300" src="{% static 'img/default_teacher_image.jpg' %}"
+                    alt="Изображение отсутствует">
+                {% endif %}
+            </div>
+            <div class="col">
+                <div class="card-body">
+                    <h5 class="card-title">{{ teacher.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Преподавательская: {{ teacher.audience }}</h6>
+                    <p class="card-text">Должность: {{ teacher.position }}</p>
+                    <p class="card-text">Работает на полную ставку: {{ teacher.full_time|yesno:"Да,Нет" }}</p>
+                    <p class="card-text">Курсы:
+                        {% if teacher.courses.all %}
+                        {% for course in teacher.courses.all %}
+                        <a href="{% url 'department:course_detail' course.id %}" class="text-decoration-none">
+                            {{ course.name }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        нет
+                        {% endif %}
+                    </p>
+                    <p class="card-text">Дополнительная работа: {{ teacher.additional_work|default:"нет" }}</p>
+                    <a href="{% url 'department:index' %}" class="btn btn-primary">Назад к преподавателям</a>
+                    {% if user.is_authenticated %}
+                    <div class="mb-2">
+                        <a class="btn btn-sm text-muted" href="{% url 'department:edit_teacher' teacher.id %}"
+                            role="button">
+                            Отредактировать преподавателя
+                        </a>
+                        <a class="btn btn-sm text-muted" href="{% url 'department:delete_teacher' teacher.id %}"
+                            role="button">
+                            Удалить преподавателя
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

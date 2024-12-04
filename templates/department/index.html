@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}
+Кафедра
+{% endblock %}
+{% block content %}
+<h1 class="text-center mb-5">Преподаватели кафедры</h1>
+{% for teacher in page_obj %}
+<article class="mb-5">
+    {% include "includes/teacher_card.html" %}
+</article>
+{% endfor %}
+{% include "includes/paginator.html" %}
+{% endblock %}

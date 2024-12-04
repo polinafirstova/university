@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+Курс: {{ course.name }}
+{% endblock %}
+{% block content %}
+<h1 class="text-center mb-4">Курс — {{ course.name }}</h1>
+<p class="col-6 offset-3 mb-5 lead text-center">{{ course.description }}</p>
+<h2 class="text-center mb-4 mt-5">Преподаватели курса:</h2>
+{% if teachers %}
+<ul class="list-group col-6 offset-3">
+    {% for teacher in teachers %}
+    <li class="list-group-item">
+        <a href="{% url 'department:teacher_detail' teacher.id %}" class="text-decoration-none">{{ teacher.name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Нет преподавателей для данного курса.</p>
+{% endif %}
+{% endblock %}
